@@ -49,7 +49,7 @@ public class SecurityConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 
                 )
-                
+                .csrf().disable()
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())); // Enable CORS here
 
         return http.build();
