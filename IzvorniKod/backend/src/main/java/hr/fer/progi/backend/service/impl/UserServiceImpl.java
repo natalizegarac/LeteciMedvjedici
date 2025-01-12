@@ -6,7 +6,6 @@ import hr.fer.progi.backend.repository.ReportRepository;
 import hr.fer.progi.backend.repository.UserRepository;
 import hr.fer.progi.backend.repository.exception.WrongInputException;
 import hr.fer.progi.backend.service.UserService;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -51,22 +50,42 @@ public class UserServiceImpl implements UserService {
     }
 
 
+/*
+    public AppUser loadCurrentUser() {
+
+
+        // Retrieve the OAuth2 token from the SecurityContext
+        OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        // Extract the email from the token attributes
+        String email = authentication.getPrincipal().getAttribute("email");
+        System.out.println(email);
+
+        final String emailToUse = email.isEmpty() ? "Anonimni korisnik" : email;
+        // Fetch the AppUser from the database using the email
+
+        //TODO: Dodati anonimnog korisnika u bazu podataka kako bi findByEmail() radilo
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new WrongInputException("User not found with email: " + emailToUse));
+    }*/
 public AppUser loadCurrentUser() {
+    // Retrieve the authentication object from the SecurityContext
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || !(authentication instanceof OAuth2AuthenticationToken)) {
-        throw new IllegalStateException("User is not authenticated via OAuth2");
+
+    // Check if the user is authenticated
+    if (authentication instanceof OAuth2AuthenticationToken) {
+        // The user is authenticated via OAuth2
+        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+        String email = oauthToken.getPrincipal().getAttribute("email");
+
+        // Fetch the user from the database using their email
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new WrongInputException("User not found with email: " + email));
+    } else {
+        // The user is not authenticated (anonymous user)
+        return userRepository.findByEmail("Anonimni korisnik")
+                .orElseThrow(() -> new WrongInputException("Anonymous user not found in the database."));
     }
-
-    OAuth2AuthenticationToken oauth2Authentication = (OAuth2AuthenticationToken) authentication;
-    String email = oauth2Authentication.getPrincipal().getAttribute("email");
-
-    if (email == null || email.isEmpty()) {
-        email = "anonimna prijava"; // Handle missing email
-    }
-
-    String finalEmail = email;
-    return userRepository.findByEmail(email)
-            .orElseThrow(() -> new WrongInputException("User not found with email: " + finalEmail));
 }
 
 }
