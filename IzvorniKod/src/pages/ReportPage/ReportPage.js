@@ -6,19 +6,17 @@ import './ReportPage.css';
 import axios from 'axios';
 import Footer from "../../components/Footer/Footer";
 
-function ReportPage(){
+function ReportPage() {
   const navigate = useNavigate();
   const [activeButton, setActiveButton] = useState(null);
   const [locationInput, setLocationInput] = useState(""); // Track user's input for location
   const [isLocationValid, setIsLocationValid] = useState(true); // Track validity of location
   const [description, setDescription] = useState(""); // Track short description
   const [locations, setLocations] = useState([]);
-
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); 
-  
-  useEffect(() => {   
 
+  useEffect(() => {   
     const fetchLocations = async () => {
       try {
         const response = await axios.get("https://safebear-backend.onrender.com/location/settlementnames"); 
@@ -32,8 +30,18 @@ function ReportPage(){
       }
     };
     fetchLocations(); 
-
   }, []); 
+
+  // Log constants to see what data we have
+  useEffect(() => {
+    console.log("locations:", locations);
+    console.log("loading:", loading);
+    console.log("activeButton:", activeButton);
+    console.log("locationInput:", locationInput);
+    console.log("isLocationValid:", isLocationValid);
+    console.log("description:", description);
+    console.log("error:", error);
+  }, [locations, loading, activeButton, locationInput, isLocationValid, description, error]); 
 
   const goBack = () => {
     navigate(-1); // Go back to the previous page
@@ -54,8 +62,14 @@ function ReportPage(){
     setDescription(e.target.value); // Set the description state based on user input
   };
 
-
   const handleSubmit = async () => {
+    // Log all constants before submission
+    console.log("Before submitting report:");
+    console.log("locationInput:", locationInput);
+    console.log("isLocationValid:", isLocationValid);
+    console.log("activeButton:", activeButton);
+    console.log("description:", description);
+
     // Validate input before submitting
     if (!isLocationValid) {
       alert("Please enter a valid location from the list.");
@@ -88,18 +102,17 @@ function ReportPage(){
         disasterType: emergencyType,
         shortDescription: description,
       }, {
-      withCredentials: true,
+        withCredentials: true,
       });
       console.log("Report submitted:", response.data);
-      //ert("Report submitted successfully!");
-      navigate("/confirmation")
+      alert("Report submitted successfully!");
+      navigate("/home");
     } catch (error) {
+      console.log("Error response:", error.response || error); // Log the full error response or message.
       console.error("Error submitting report:", error);
       alert("Failed to submit report.");
     }
-
   };
-  
 
   return (
     <div>
@@ -112,7 +125,6 @@ function ReportPage(){
             <FaArrowLeft /> Back
           </button>
           <h1 className="header-title">REPORT AN EMERGENCY:</h1>
-
         </div>
 
         {/* Content */}
@@ -188,7 +200,6 @@ function ReportPage(){
             <button className="submit-button" onClick={handleSubmit}>SUBMIT REPORT</button>
           </div>
           
-
         </div>
       </div>
       <Footer />

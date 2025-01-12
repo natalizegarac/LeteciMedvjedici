@@ -6,7 +6,7 @@ function AnonHeader() {
         <header className="anon-header">
             
             <img src="/logo.jpg" alt="Logo" className="logo" />
-            <p className="slogan">Need help? Want to report an emergency? Use SafeBear.</p>
+            <text className="slogan">Need help? Want to report an emergency? Use SafeBear.</text>
             
         </header>
     );

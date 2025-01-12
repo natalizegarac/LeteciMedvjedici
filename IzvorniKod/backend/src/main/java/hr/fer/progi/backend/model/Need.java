@@ -28,17 +28,13 @@ public class Need {
 	@Enumerated(EnumType.STRING)
 	private NeedStatus needStatus;
 
-	@NotNull
-	private int quantity;
-
 	public Need() {
 	}
 
-	public Need(NeedType needType, AppUser appUser, String address, int quantity) {
+	public Need(NeedType needType, AppUser appUser, String address) {
 		this.id.setNeedType(needType);
 		this.appUser = appUser;
 		this.address = address;
-		this.quantity = quantity;
 	}
 
 	public AppUser getAppUser() {
@@ -83,11 +79,4 @@ public class Need {
 		return this.id.getAppUserId();
 	}
 
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
 }

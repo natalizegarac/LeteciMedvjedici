@@ -13,5 +13,4 @@ import org.springframework.stereotype.Service;
 public interface OAuth2Service  {
 
     public AppUser processOAuthPostLogin(String email, String name);
-    public OidcUser loadUser(OidcUserRequest userRequest);
 }

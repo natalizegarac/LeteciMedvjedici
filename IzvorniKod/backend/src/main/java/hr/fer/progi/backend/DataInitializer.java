@@ -1,6 +1,5 @@
 //package hr.fer.progi.backend;
-
-
+//
 //import hr.fer.progi.backend.model.County;
 //import hr.fer.progi.backend.model.Settlement;
 //import hr.fer.progi.backend.model.Enum.Region;
@@ -27,16 +26,17 @@
 //	@Autowired
 //	private CountyService countyService;
 //
- /*   @Autowired
-    private UserRepository userRepository;
-
-	@EventListener
-	public void appReady(ApplicationReadyEvent event) {
-
-
-        AppUser humanitarna = new AppUser("l.humanitarna.m@gmail.com", "Humanitarna organizacija", Role.ROLE_HUMANITARIAN);
-        userRepository.save(humanitarna);
-	}}*/
+//	@EventListener
+//	public void appReady(ApplicationReadyEvent event) {
+//		List<County> counties = getCountyData();
+//		for (County county : counties) {
+//			countyService.createCounty(county);
+//		}
+//		List<Settlement> settlements = readSettlementsFromCSV("naselja.csv");
+//		for (Settlement settlement : settlements) {
+//			settlementService.createSettlement(settlement);
+//		}
+//	}
 //
 //	private List<County> getCountyData() {
 //	    List<County> counties = new ArrayList<>();
